@@ -18,7 +18,7 @@ explotan y suman puntos.
 - Un equipo de escritorio (Windows, macOS o Linux)
 
 ## Instalación y ejecución
-1. Clona el repositorio: `git clone <URL-DEL-REPOSITORIO>`
+1. Clona el repositorio: `git clone https://github.com/santiagotafur2026/ZumaMini.git`
 2. Abre Godot y pulsa **Importar** (o *Import*).
 3. Selecciona el archivo `project.godot` de esta carpeta.
 4. Pulsa **Importar y editar**.
