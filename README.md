@@ -5,11 +5,8 @@ El jugador dispara bolas de colores desde un lanzador hacia un conjunto de bolas
 **estáticas**; al formar un grupo conectado de 3 o más bolas del mismo color, estas
 explotan y suman puntos.
 
-> **Estado actual:** Fase 1 completada (proyecto base). El juego aún no tiene mecánicas.
 
-## Objetivo del proyecto
-Construir de forma progresiva y verificable un prototipo jugable, con control de
-versiones (Git/GitHub) y documentación del proceso.
+
 
 ## Tecnologías
 - Godot Engine 4.x (estable, probado con la configuración 4.3)
