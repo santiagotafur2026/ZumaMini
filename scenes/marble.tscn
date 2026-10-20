@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cljvr0n0d2du1"]
+
+[ext_resource type="Script" uid="uid://dvx2wjsfes10h" path="res://scripts/marble.gd" id="1_marble"]
+
+[node name="Marble" type="Node2D" unique_id=144110744]
+script = ExtResource("1_marble")
