@@ -51,9 +51,9 @@ Se usarán formas geométricas y recursos propios o con licencia compatible.
 
 ## Funcionalidades
 - [x] Fase 1: proyecto, resolución 1280x720, escena inicial
-- [ ] Fase 2: tablero y bolas estáticas
-- [ ] Fase 3: lanzador y disparo
-- [ ] Fase 4: coincidencias y eliminación
-- [ ] Fase 5: explosiones y puntuación
+- [ x] Fase 2: tablero y bolas estáticas
+- [x ] Fase 3: lanzador y disparo
+- [x ] Fase 4: coincidencias y eliminación
+- [ x] Fase 5: explosiones y puntuación
 - [ ] Fase 6: menú, HUD y reinicio
 - [ ] Fase 7: pruebas y entrega
