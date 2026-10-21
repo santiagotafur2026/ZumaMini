@@ -289,7 +289,14 @@ func eliminar_grupo(grupo):
 
 	# avisamos que se elimino un grupo (una sola vez)
 	grupo_eliminado.emit(cantidad, centro)
-
+# devuelve la lista de colores que todavia hay en el tablero
+func colores_en_juego():
+	var lista = []
+	for celda in grid.keys():
+		var c = grid[celda].color_index
+		if not lista.has(c):
+			lista.append(c)
+	return lista
 
 # ---------- dibujo ----------
 

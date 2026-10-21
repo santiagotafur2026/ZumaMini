@@ -1,6 +1,6 @@
 extends Node2D
 # Script principal del juego (coordinador).
-# Controla el clic, el vuelo de la bola, el puntaje y conecta las demas partes.
+# Controla el clic, el vuelo de la bola, el puntaje, la victoria y los botones.
 # El tablero (celdas, vecinos, grupos) esta en board.gd
 
 var escena_bola = preload("res://scenes/marble.tscn")
@@ -13,6 +13,12 @@ var alto_pantalla = 720
 @onready var etiqueta = $UI/InfoLabel
 @onready var etiqueta_puntaje = $UI/ScoreLabel
 @onready var lanzador = $Shooter
+@onready var boton_reiniciar = $UI/BotonReiniciar
+@onready var boton_menu = $UI/BotonMenu
+@onready var panel_victoria = $UI/PanelVictoria
+@onready var texto_puntaje_final = $UI/PanelVictoria/CenterContainer/VBoxContainer/PuntajeFinal
+@onready var boton_jugar_de_nuevo = $UI/PanelVictoria/CenterContainer/VBoxContainer/BotonJugarDeNuevo
+@onready var boton_volver_menu = $UI/PanelVictoria/CenterContainer/VBoxContainer/BotonVolverMenu
 
 # variables del disparo
 var disparando = false
@@ -24,15 +30,28 @@ var velocidad = 900.0
 var puntos = 0
 var puntos_por_bola = 10
 
+# se vuelve true cuando el jugador gana
+var juego_terminado = false
+
 
 func _ready():
 	# ponemos el lanzador abajo en el centro
 	lanzador.position = Vector2(640, 650)
+		# el panel de victoria empieza oculto y cubre toda la pantalla
+	panel_victoria.visible = false
+	panel_victoria.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel_victoria.color = Color(0, 0, 0, 0.7)
+	$UI/PanelVictoria/CenterContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	# cuando el tablero elimine un grupo, se ejecuta al_eliminar_grupo
 	tablero.grupo_eliminado.connect(al_eliminar_grupo)
 
-	etiqueta.text = "Apunta con el raton y dispara con clic izquierdo"
+	# conectamos los botones
+	boton_reiniciar.pressed.connect(reiniciar)
+	boton_menu.pressed.connect(volver_al_menu)
+	boton_jugar_de_nuevo.pressed.connect(reiniciar)
+	boton_volver_menu.pressed.connect(volver_al_menu)
+
 	actualizar_puntaje()
 
 	# para que se dibuje el fondo
@@ -40,11 +59,12 @@ func _ready():
 
 
 # detecta el clic del raton
-func _input(event):
+# (usamos _unhandled_input para que el clic en un boton NO dispare)
+func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			# solo disparamos si no hay otra bola en el aire
-			if disparando == false:
+			# solo disparamos si no hay otra bola en el aire y el juego sigue
+			if disparando == false and juego_terminado == false:
 				disparar()
 
 
@@ -92,7 +112,9 @@ func terminar_disparo():
 
 	disparando = false
 	bola_disparada = null
-	lanzador.nuevo_color()
+
+	# el nuevo color solo puede ser uno que todavia exista en el tablero
+	lanzador.nuevo_color(tablero.colores_en_juego())
 	lanzador.bola_vista.visible = true
 
 
@@ -103,6 +125,10 @@ func al_eliminar_grupo(cantidad, posicion):
 	actualizar_puntaje()
 	mostrar_puntos(ganados, posicion)
 	print("Puntos ganados: ", ganados, " | Total: ", puntos)
+
+	# si ya no quedan bolas, ganamos
+	if tablero.grid.size() == 0:
+		mostrar_victoria()
 
 
 # cambia el texto del puntaje
@@ -128,6 +154,24 @@ func mostrar_puntos(ganados, posicion):
 	animacion.tween_property(texto, "position:y", texto.position.y - 60, 0.9)
 	animacion.tween_property(texto, "modulate:a", 0.0, 0.9)
 	animacion.chain().tween_callback(texto.queue_free)
+
+
+# muestra el panel de victoria
+func mostrar_victoria():
+	juego_terminado = true
+	texto_puntaje_final.text = "Puntaje final: " + str(puntos)
+	panel_victoria.visible = true
+	print("Victoria con ", puntos, " puntos")
+
+
+# vuelve a empezar el nivel
+func reiniciar():
+	get_tree().reload_current_scene()
+
+
+# vuelve al menu principal
+func volver_al_menu():
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 
 # dibuja el fondo de la pantalla

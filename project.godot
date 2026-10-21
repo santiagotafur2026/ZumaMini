@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Zuma Mini"
 config/description="Juego 2D de bolas estaticas inspirado en la mecanica de Zuma."
-run/main_scene="uid://dcwc8jpb68ani"
+run/main_scene="uid://cy1skc2fhtky4"
 config/features=PackedStringArray("4.7")
 
 [display]

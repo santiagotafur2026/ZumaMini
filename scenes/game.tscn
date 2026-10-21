@@ -7,6 +7,9 @@
 [node name="Game" type="Node2D" unique_id=318267291]
 script = ExtResource("1_uwrxv")
 
+[node name="Shooter" type="Node2D" parent="." unique_id=1163518298]
+script = ExtResource("2_yqjtg")
+
 [node name="Board" type="Node2D" parent="." unique_id=675247303]
 script = ExtResource("2_lnu2h")
 
@@ -15,7 +18,8 @@ script = ExtResource("2_lnu2h")
 [node name="InfoLabel" type="Label" parent="UI" unique_id=57731521]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Fase 2"
+theme_override_font_sizes/font_size = 18
+text = "Raton: apuntar  Clic izquierdo: disparar , Grupos de 3 o mas del mismo color explotan"
 
 [node name="ScoreLabel" type="Label" parent="UI" unique_id=3642706]
 offset_left = 1020.0
@@ -25,5 +29,59 @@ offset_bottom = 51.0
 theme_override_font_sizes/font_size = 28
 text = "Puntaje: 0"
 
-[node name="Shooter" type="Node2D" parent="." unique_id=1163518298]
-script = ExtResource("2_yqjtg")
+[node name="BotonMenu" type="Button" parent="UI" unique_id=1995627825]
+custom_minimum_size = Vector2(150, 44)
+offset_left = 940.0
+offset_top = 660.0
+offset_right = 993.0
+offset_bottom = 691.0
+text = "Menu"
+
+[node name="BotonReiniciar" type="Button" parent="UI" unique_id=1779005968]
+custom_minimum_size = Vector2(150, 44)
+offset_left = 1100.0
+offset_top = 660.0
+offset_right = 1176.0
+offset_bottom = 691.0
+text = "Reiniciar"
+
+[node name="PanelVictoria" type="ColorRect" parent="UI" unique_id=1896560066]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/PanelVictoria" unique_id=1557200737]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PanelVictoria/CenterContainer" unique_id=969919711]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="MensajeVictoria" type="Label" parent="UI/PanelVictoria/CenterContainer/VBoxContainer" unique_id=2041863980]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Victoria"
+horizontal_alignment = 1
+
+[node name="PuntajeFinal" type="Label" parent="UI/PanelVictoria/CenterContainer/VBoxContainer" unique_id=103845417]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Puntaje final: 0"
+horizontal_alignment = 1
+
+[node name="BotonJugarDeNuevo" type="Button" parent="UI/PanelVictoria/CenterContainer/VBoxContainer" unique_id=1747545719]
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+text = "Jugar de nuevo"
+
+[node name="BotonVolverMenu" type="Button" parent="UI/PanelVictoria/CenterContainer/VBoxContainer" unique_id=525442892]
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+text = "Volver al menú"

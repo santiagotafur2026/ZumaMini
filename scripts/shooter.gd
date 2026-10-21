@@ -35,8 +35,13 @@ func _ready():
 
 
 # elige un color nuevo al azar para la siguiente bola
-func nuevo_color():
-	color_actual = randi_range(0, cantidad_colores - 1)
+# elige un color nuevo para la siguiente bola
+# si recibe una lista, elige solo entre esos colores
+func nuevo_color(lista = []):
+	if lista.size() > 0:
+		color_actual = lista[randi_range(0, lista.size() - 1)]
+	else:
+		color_actual = randi_range(0, cantidad_colores - 1)
 	bola_vista.preparar(color_actual, Vector2i(0, 0))
 
 

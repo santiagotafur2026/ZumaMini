@@ -55,5 +55,5 @@ Se usarán formas geométricas y recursos propios o con licencia compatible.
 - [x ] Fase 3: lanzador y disparo
 - [x ] Fase 4: coincidencias y eliminación
 - [ x] Fase 5: explosiones y puntuación
-- [ ] Fase 6: menú, HUD y reinicio
+- [ x] Fase 6: menú, HUD y reinicio
 - [ ] Fase 7: pruebas y entrega
