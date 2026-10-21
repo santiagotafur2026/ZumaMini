@@ -1,7 +1,7 @@
 extends Node2D
 # Script principal del juego (coordinador).
-# Controla el clic, el vuelo de la bola y conecta las demas partes.
-# El tablero (celdas, vecinos, grupos) esta ahora en board.gd
+# Controla el clic, el vuelo de la bola, el puntaje y conecta las demas partes.
+# El tablero (celdas, vecinos, grupos) esta en board.gd
 
 var escena_bola = preload("res://scenes/marble.tscn")
 
@@ -11,6 +11,7 @@ var alto_pantalla = 720
 # nodos de la escena (los nombres deben ser iguales a los de la escena)
 @onready var tablero = $Board
 @onready var etiqueta = $UI/InfoLabel
+@onready var etiqueta_puntaje = $UI/ScoreLabel
 @onready var lanzador = $Shooter
 
 # variables del disparo
@@ -18,6 +19,10 @@ var disparando = false
 var bola_disparada = null
 var direccion_disparo = Vector2(0, -1)
 var velocidad = 900.0
+
+# puntaje: 10 puntos por cada bola eliminada
+var puntos = 0
+var puntos_por_bola = 10
 
 
 func _ready():
@@ -27,7 +32,8 @@ func _ready():
 	# cuando el tablero elimine un grupo, se ejecuta al_eliminar_grupo
 	tablero.grupo_eliminado.connect(al_eliminar_grupo)
 
-	etiqueta.text = "Forma grupos de 3 o mas bolas del mismo color"
+	etiqueta.text = "Apunta con el raton y dispara con clic izquierdo"
+	actualizar_puntaje()
 
 	# para que se dibuje el fondo
 	queue_redraw()
@@ -91,9 +97,37 @@ func terminar_disparo():
 
 
 # se ejecuta cuando el tablero avisa que elimino un grupo
-func al_eliminar_grupo(cantidad):
-	print("game_manager: se elimino un grupo de ", cantidad, " bolas")
-	# aqui sumaremos puntos en la Fase 5
+func al_eliminar_grupo(cantidad, posicion):
+	var ganados = cantidad * puntos_por_bola
+	puntos += ganados
+	actualizar_puntaje()
+	mostrar_puntos(ganados, posicion)
+	print("Puntos ganados: ", ganados, " | Total: ", puntos)
+
+
+# cambia el texto del puntaje
+func actualizar_puntaje():
+	etiqueta_puntaje.text = "Puntaje: " + str(puntos)
+
+
+# muestra un texto "+30" que sube y se desvanece
+func mostrar_puntos(ganados, posicion):
+	var texto = Label.new()
+	texto.text = "+" + str(ganados)
+	texto.add_theme_font_size_override("font_size", 32)
+	texto.add_theme_color_override("font_color", Color("ffd23f"))
+	texto.add_theme_color_override("font_outline_color", Color("0f1b2d"))
+	texto.add_theme_constant_override("outline_size", 6)
+	texto.position = posicion - Vector2(30, 20)
+	texto.z_index = 10
+	add_child(texto)
+
+	# animacion: sube 60 pixeles y se hace transparente en 0.9 segundos
+	var animacion = create_tween()
+	animacion.set_parallel(true)
+	animacion.tween_property(texto, "position:y", texto.position.y - 60, 0.9)
+	animacion.tween_property(texto, "modulate:a", 0.0, 0.9)
+	animacion.chain().tween_callback(texto.queue_free)
 
 
 # dibuja el fondo de la pantalla

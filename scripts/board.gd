@@ -3,10 +3,18 @@ extends Node2D
 # Guarda las bolas, las celdas, los vecinos y elimina los grupos.
 
 # esta senal avisa cuando se elimina un grupo (la usaremos en la Fase 5)
-signal grupo_eliminado(cantidad)
+signal grupo_eliminado(cantidad,posicion)
 
 var escena_bola = preload("res://scenes/marble.tscn")
-
+var escena_explosion = preload("res://scenes/explosion.tscn")
+# colores de las explosiones (mismo orden que las bolas)
+var colores_explosion = [
+	Color("e63946"),
+	Color("3a86ff"),
+	Color("2ec27e"),
+	Color("ffd23f"),
+	Color("9d4edd")
+]
 # tamanos
 var ancho_pantalla = 1280
 var radio = 24.0
@@ -256,18 +264,31 @@ func revisar_grupo(celda):
 
 
 # quita las bolas del grupo del tablero y del grid
+# quita las bolas del grupo del tablero y del grid
 func eliminar_grupo(grupo):
 	var cantidad = grupo.size()
+	var suma_posiciones = Vector2(0, 0)
 
 	for celda in grupo:
 		var bola = grid[celda]
+		suma_posiciones += bola.position
+
+		# creamos una explosion del color de la bola
+		var explosion = escena_explosion.instantiate()
+		explosion.position = bola.position
+		explosion.preparar(colores_explosion[bola.color_index])
+		add_child(explosion)
+
 		grid.erase(celda)   # la sacamos de la estructura de datos
 		bola.queue_free()   # la quitamos de la pantalla
 
+	# el centro del grupo (para mostrar los puntos ahi)
+	var centro = suma_posiciones / cantidad
+
 	print("Se eliminaron ", cantidad, " bolas. Quedan ", grid.size())
 
-	# avisamos que se elimino un grupo
-	grupo_eliminado.emit(cantidad)
+	# avisamos que se elimino un grupo (una sola vez)
+	grupo_eliminado.emit(cantidad, centro)
 
 
 # ---------- dibujo ----------

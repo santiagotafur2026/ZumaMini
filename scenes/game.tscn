@@ -17,5 +17,13 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Fase 2"
 
+[node name="ScoreLabel" type="Label" parent="UI" unique_id=3642706]
+offset_left = 1020.0
+offset_top = 12.0
+offset_right = 1155.0
+offset_bottom = 51.0
+theme_override_font_sizes/font_size = 28
+text = "Puntaje: 0"
+
 [node name="Shooter" type="Node2D" parent="." unique_id=1163518298]
 script = ExtResource("2_yqjtg")
