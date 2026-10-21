@@ -15,5 +15,5 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Fase 2"
 
-[node name="Node2D" type="Node2D" parent="." unique_id=1163518298]
+[node name="Shooter" type="Node2D" parent="." unique_id=1163518298]
 script = ExtResource("2_yqjtg")
