@@ -1,18 +1,35 @@
 extends Node2D
-# Script del lanzador (Fase 3)
-# Apunta al raton y guarda el color de la bola que se va a disparar.
+# Script del lanzador con imagen de sapo (Fase 3)
+# El sapo gira hacia el raton y lleva la bola en la boca.
 
 var escena_bola = preload("res://scenes/marble.tscn")
 
+
+var ruta_sapo = "res://assets/sprites/sapo.png"
+var escala_sapo = 0.5                    # sube o baja para cambiar el tamano
+var rotacion_imagen = 0.0                # 0 si el sapo mira arriba, 3.14159 si mira abajo
+var posicion_boca = Vector2(0, -30)      # donde se ve la bola (x, y)
+
+
 var cantidad_colores = 5
 var color_actual = 0
-var bola_vista = null      # la bolita que se ve dentro del lanzador
+var bola_vista = null      # la bolita que tiene en la boca
+var sprite = null          # la imagen del sapo
 var angulo_disparo = -1.57 # hacia arriba por defecto
 
 
 func _ready():
-	# creamos la bola que se ve en el lanzador
+	# si existe la imagen del sapo la ponemos
+	if ResourceLoader.exists(ruta_sapo):
+		sprite = Sprite2D.new()
+		sprite.texture = load(ruta_sapo)
+		sprite.scale = Vector2(escala_sapo, escala_sapo)
+		sprite.rotation = rotacion_imagen
+		add_child(sprite)
+
+	# creamos la bola que se ve en la boca (se agrega despues para quedar encima)
 	bola_vista = escena_bola.instantiate()
+	bola_vista.position = posicion_boca
 	add_child(bola_vista)
 	nuevo_color()
 
@@ -24,13 +41,13 @@ func nuevo_color():
 
 
 func _process(delta):
-	# direccion desde el lanzador hasta el raton
+	# direccion desde el sapo hasta el raton
 	var raton = get_global_mouse_position()
 	var direccion = raton - global_position
 
 	var angulo = direccion.angle()
 
-	# si el raton esta mas abajo que el lanzador, apuntamos casi horizontal
+	# si el raton esta mas abajo que el sapo, apuntamos casi horizontal
 	if angulo > 0:
 		if direccion.x >= 0:
 			angulo = -0.17
@@ -41,19 +58,15 @@ func _process(delta):
 	angulo = clamp(angulo, -2.97, -0.17)
 
 	angulo_disparo = angulo
-	# el canon se dibuja hacia arriba, por eso sumamos PI / 2
+	# la imagen mira hacia arriba, por eso sumamos PI / 2
 	rotation = angulo + PI / 2
 
 
-# dibujamos el lanzador con formas
 func _draw():
-	# base
-	draw_circle(Vector2(0, 0), 38, Color("324a6d"))
-	draw_circle(Vector2(0, 0), 30, Color("1b2a41"))
-
-	# canon
-	draw_rect(Rect2(-14, -62, 28, 44), Color("4a6a9a"))
-	draw_rect(Rect2(-14, -62, 28, 44), Color("0f1b2d"), false, 2.0)
+	# si no hay imagen, dibujamos una base simple para no dejarlo vacio
+	if sprite == null:
+		draw_circle(Vector2(0, 0), 38, Color("324a6d"))
+		draw_circle(Vector2(0, 0), 30, Color("1b2a41"))
 
 	# linea de ayuda para apuntar
-	draw_line(Vector2(0, -66), Vector2(0, -220), Color(1, 1, 1, 0.25), 2.0)
+	draw_line(Vector2(0, -56), Vector2(0, -220), Color(1, 1, 1, 0.25), 2.0)
